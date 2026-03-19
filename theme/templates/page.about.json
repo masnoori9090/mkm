@@ -1,0 +1,42 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero-banner",
+      "settings": {
+        "subtitle": "Our Heritage",
+        "heading": "THE STORY OF GET ANY SCENT",
+        "layout": "full_overlay",
+        "text_alignment": "center",
+        "overlay_opacity": 50
+      }
+    },
+    "about-content": {
+      "type": "image-with-text",
+      "settings": {
+        "image_position": "right",
+        "heading": "Born in Dubai",
+        "body_text": "<p>Get Any Scent was founded with a singular vision: to bring the world's most extraordinary fragrances to discerning customers across the globe.</p>"
+      }
+    },
+    "split": {
+      "type": "split-feature",
+      "settings": {
+        "image_position": "left",
+        "subtitle": "Our Mission",
+        "heading": "FRAGRANCE AS ART",
+        "body_text": "<p>We believe that perfume is the invisible part of your personality — the most potent form of self-expression available.</p>",
+        "button_label": "Shop Now",
+        "button_link": "/collections/all"
+      }
+    },
+    "newsletter": {
+      "type": "newsletter-signup",
+      "settings": {
+        "subtitle": "Stay Connected",
+        "heading": "JOIN THE INNER CIRCLE",
+        "button_label": "SUBSCRIBE"
+      }
+    }
+  },
+  "order": ["hero", "about-content", "split", "newsletter"]
+}

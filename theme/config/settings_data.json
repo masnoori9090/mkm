@@ -1,0 +1,24 @@
+{
+  "current": {
+    "color_primary": "#132616",
+    "color_secondary": "#19321D",
+    "color_accent": "#8E866A",
+    "color_accent_dark": "#2D3B29",
+    "color_background": "#F5F2ED",
+    "color_background_cream": "#EDE9E0",
+    "color_text": "#000000",
+    "color_text_muted": "#8E866A",
+    "color_white": "#FFFFFF",
+    "font_heading": "cormorant_garamond_n4",
+    "font_body": "lato_n4",
+    "font_size_base": 16,
+    "social_instagram": "",
+    "social_tiktok": "",
+    "social_facebook": "",
+    "social_twitter": "",
+    "cart_drawer_enabled": true,
+    "free_shipping_threshold": "200",
+    "free_shipping_currency": "AED"
+  },
+  "presets": {}
+}

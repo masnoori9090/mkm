@@ -1,0 +1,15 @@
+{
+  "sections": {
+    "not-found": {
+      "type": "rich-text",
+      "settings": {
+        "heading": "PAGE NOT FOUND",
+        "body_text": "<p>The page you were looking for does not exist.</p>",
+        "button_label": "Back to Home",
+        "button_link": "/",
+        "content_alignment": "center"
+      }
+    }
+  },
+  "order": ["not-found"]
+}

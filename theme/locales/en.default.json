@@ -1,0 +1,95 @@
+{
+  "general": {
+    "meta": {
+      "page": "Page {{ page }}",
+      "all_rights_reserved": "All rights reserved.",
+      "description": "Luxury niche fragrances curated in Dubai."
+    },
+    "newsletter": {
+      "email_label": "Email address",
+      "email_placeholder": "Your email address"
+    },
+    "search": {
+      "search": "Search",
+      "placeholder": "Search fragrances..."
+    },
+    "share": {
+      "title": "Share"
+    },
+    "accessibility": {
+      "skip_to_content": "Skip to content",
+      "close": "Close",
+      "close_menu": "Close menu",
+      "open_menu": "Open menu",
+      "nav_primary": "Primary navigation"
+    },
+    "pagination": {
+      "previous": "Previous",
+      "next": "Next"
+    }
+  },
+  "accessibility": {
+    "skip_to_content": "Skip to content",
+    "nav_primary": "Primary navigation"
+  },
+  "sections": {
+    "header": {
+      "menu": "Menu"
+    },
+    "footer": {
+      "quick_links": "Quick Links",
+      "help": "Help",
+      "contact": "Contact Us"
+    },
+    "cart": {
+      "title": "Your Bag",
+      "empty": "Your bag is empty",
+      "continue_shopping": "Continue Shopping",
+      "checkout": "Checkout",
+      "subtotal": "Subtotal",
+      "items": "Cart items",
+      "remove": "Remove {{ title }}",
+      "increase_quantity": "Increase quantity",
+      "decrease_quantity": "Decrease quantity",
+      "free_shipping_reached": "You've unlocked free shipping!",
+      "free_shipping_progress": "{{ remaining }} away from free shipping"
+    },
+    "carousel": {
+      "prev": "Previous slide",
+      "next": "Next slide"
+    },
+    "instagram": {
+      "view_on_instagram": "View on Instagram"
+    }
+  },
+  "collections": {
+    "general": {
+      "no_matches": "No products found in this collection."
+    },
+    "sorting": {
+      "title": "Sort by"
+    }
+  },
+  "products": {
+    "product": {
+      "add_to_cart": "Add to Bag",
+      "add_to_bag": "Add to Bag",
+      "sold_out": "Sold Out",
+      "sale": "Sale",
+      "regular_price": "Regular price",
+      "quantity": "Quantity",
+      "increase_quantity": "Increase quantity",
+      "decrease_quantity": "Decrease quantity",
+      "add_to_wishlist": "Add to Wishlist",
+      "shop_now": "Shop Now",
+      "media": {
+        "load_image": "Load image {{ index }} in gallery view"
+      }
+    }
+  },
+  "customer": {
+    "account": {
+      "title": "Account"
+    }
+  }
+}

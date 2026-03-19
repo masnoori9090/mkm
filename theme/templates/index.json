@@ -1,0 +1,93 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero-banner",
+      "settings": {
+        "subtitle": "New Collection",
+        "heading": "THE ART OF SCENT",
+        "description": "<p>Discover our curated collection of niche fragrances, artisan-crafted for the discerning nose.</p>",
+        "button_label": "Explore Now",
+        "button_link": "/collections/all",
+        "layout": "image_left",
+        "text_alignment": "left",
+        "overlay_opacity": 40,
+        "enable_parallax": true
+      }
+    },
+    "marquee": {
+      "type": "marquee-ticker",
+      "settings": {
+        "marquee_text": "NICHE FRAGRANCES • ARTISAN CRAFTED • WORLDWIDE SHIPPING • DUBAI'S FINEST PERFUMERY • EXCLUSIVE COLLECTIONS",
+        "speed": 30,
+        "font_size": 13
+      }
+    },
+    "featured": {
+      "type": "featured-collection",
+      "settings": {
+        "heading": "CURATED SELECTIONS",
+        "subheading": "Discover our most sought-after fragrances",
+        "products_to_show": 4,
+        "grid_layout": "asymmetric",
+        "view_all_label": "View All"
+      }
+    },
+    "split": {
+      "type": "split-feature",
+      "settings": {
+        "image_position": "left",
+        "subtitle": "Our Story",
+        "heading": "THE HOUSE OF GET ANY SCENT",
+        "body_text": "<p>Born in Dubai's vibrant fragrance culture, Get Any Scent curates the world's most exclusive niche perfumes. Each bottle tells a story of craftsmanship, heritage, and artistry.</p>",
+        "button_label": "Discover Our Story",
+        "button_link": "/pages/about"
+      }
+    },
+    "bestsellers": {
+      "type": "bestsellers-carousel",
+      "settings": {
+        "heading": "BESTSELLERS",
+        "products_to_show": 8,
+        "show_arrows": true,
+        "enable_autoplay": false,
+        "autoplay_speed": 5
+      }
+    },
+    "journal": {
+      "type": "journal-editorial",
+      "settings": {
+        "heading": "THE JOURNAL",
+        "articles_to_show": 3,
+        "layout": "editorial"
+      }
+    },
+    "instagram": {
+      "type": "instagram-feed",
+      "settings": {
+        "heading": "FOLLOW @GETANYSCENT",
+        "images_to_show": 6
+      },
+      "blocks": {}
+    },
+    "newsletter": {
+      "type": "newsletter-signup",
+      "settings": {
+        "subtitle": "Stay Connected",
+        "heading": "JOIN THE INNER CIRCLE",
+        "description": "<p>Be the first to discover new arrivals, exclusive offers, and the art of fine fragrance.</p>",
+        "button_label": "SUBSCRIBE",
+        "success_message": "Welcome to the inner circle."
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "marquee",
+    "featured",
+    "split",
+    "bestsellers",
+    "journal",
+    "instagram",
+    "newsletter"
+  ]
+}

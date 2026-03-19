@@ -1,0 +1,13 @@
+{
+  "sections": {
+    "blog-articles": {
+      "type": "journal-editorial",
+      "settings": {
+        "heading": "THE JOURNAL",
+        "articles_to_show": 6,
+        "layout": "equal_columns"
+      }
+    }
+  },
+  "order": ["blog-articles"]
+}

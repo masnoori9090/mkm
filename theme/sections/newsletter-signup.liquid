@@ -1,0 +1,131 @@
+{{ 'section-newsletter.css' | asset_url | stylesheet_tag }}
+
+<section
+  class="newsletter"
+  id="Newsletter-{{ section.id }}"
+  {%- if section.settings.bg_image != blank -%}
+    style="--newsletter-bg-image: url('{{ section.settings.bg_image | image_url: width: 1920 }}'); --newsletter-bg-opacity: {{ section.settings.bg_opacity | divided_by: 100.0 }};"
+  {%- endif -%}
+>
+  {%- if section.settings.bg_image != blank -%}
+    <div class="newsletter__bg-image" aria-hidden="true"></div>
+  {%- endif -%}
+
+  <div class="container">
+    <div class="newsletter__content">
+      {%- if section.settings.subtitle != blank -%}
+        <p class="newsletter__subtitle reveal-on-scroll">{{ section.settings.subtitle }}</p>
+      {%- endif -%}
+
+      {%- if section.settings.heading != blank -%}
+        <h2 class="newsletter__heading reveal-on-scroll">{{ section.settings.heading }}</h2>
+      {%- endif -%}
+
+      {%- if section.settings.description != blank -%}
+        <div class="newsletter__description rte reveal-on-scroll">{{ section.settings.description }}</div>
+      {%- endif -%}
+
+      <div class="newsletter__form-wrap reveal-on-scroll">
+        {%- form 'customer', id: 'NewsletterForm-{{ section.id }}', class: 'newsletter__form' -%}
+          <input type="hidden" name="contact[tags]" value="newsletter">
+
+          {%- if form.posted_successfully? -%}
+            <p class="newsletter__success" role="status">
+              {{ section.settings.success_message | default: 'Welcome to the inner circle.' }}
+            </p>
+          {%- else -%}
+            {%- if form.errors -%}
+              <p class="newsletter__error" role="alert">{{ form.errors.translated_fields['email'] | capitalize }} {{ form.errors.messages['email'] }}</p>
+            {%- endif -%}
+
+            <div class="newsletter__input-group">
+              <label for="NewsletterEmail-{{ section.id }}" class="visually-hidden">{{ 'general.newsletter.email_label' | t }}</label>
+              <input
+                type="email"
+                name="contact[email]"
+                id="NewsletterEmail-{{ section.id }}"
+                class="newsletter__input"
+                value="{{ form.email }}"
+                autocorrect="off"
+                autocapitalize="off"
+                autocomplete="email"
+                placeholder="{{ 'general.newsletter.email_placeholder' | t }}"
+                required
+                aria-required="true"
+              >
+              <button type="submit" class="newsletter__submit btn btn--solid">
+                {{ section.settings.button_label | default: 'SUBSCRIBE' }}
+              </button>
+            </div>
+          {%- endif -%}
+
+        {%- endform -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Newsletter Signup",
+  "class": "section-newsletter-signup",
+  "tag": "div",
+  "settings": [
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Stay Connected"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "JOIN THE INNER CIRCLE"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>Be the first to discover new arrivals, exclusive offers, and the art of fine fragrance.</p>"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "SUBSCRIBE"
+    },
+    {
+      "type": "text",
+      "id": "success_message",
+      "label": "Success message",
+      "default": "Welcome to the inner circle."
+    },
+    {
+      "type": "image_picker",
+      "id": "bg_image",
+      "label": "Background image (optional)"
+    },
+    {
+      "type": "range",
+      "id": "bg_opacity",
+      "min": 0,
+      "max": 50,
+      "step": 5,
+      "default": 10,
+      "unit": "%",
+      "label": "Background image opacity"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Newsletter Signup",
+      "settings": {
+        "subtitle": "Stay Connected",
+        "heading": "JOIN THE INNER CIRCLE",
+        "button_label": "SUBSCRIBE"
+      }
+    }
+  ]
+}
+{% endschema %}

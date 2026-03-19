@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="{{ request.locale.iso_code }}">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, height=device-height, minimum-scale=1.0">
+    <meta name="theme-color" content="{{ settings.color_primary }}">
+
+    {%- if settings.favicon != blank -%}
+      <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
+    {%- endif -%}
+
+    <title>
+      {{ page_title }}
+      {%- if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif -%}
+      {%- if current_page != 1 %} &ndash; {{ 'general.meta.page' | t: page: current_page }}{% endif -%}
+      {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
+    </title>
+
+    {% if page_description %}
+      <meta name="description" content="{{ page_description | escape }}">
+    {% endif %}
+
+    <link rel="canonical" href="{{ canonical_url }}">
+
+    {%- if settings.font_heading != blank -%}
+      {{ settings.font_heading | font_face: font_display: 'swap' }}
+    {%- endif -%}
+    {%- if settings.font_body != blank -%}
+      {{ settings.font_body | font_face: font_display: 'swap' }}
+    {%- endif -%}
+
+    {{ 'custom-fonts.css' | asset_url | stylesheet_tag }}
+    {{ 'base.css' | asset_url | stylesheet_tag }}
+    {{ 'animations.css' | asset_url | stylesheet_tag }}
+
+    {%- unless settings.cart_drawer_enabled == false -%}
+      {{ 'component-cart-drawer.css' | asset_url | stylesheet_tag }}
+    {%- endunless -%}
+
+    {%- liquid
+      assign body_font_bold = settings.font_body | font_modify: 'weight', 'bold'
+      assign body_font_italic = settings.font_body | font_modify: 'style', 'italic'
+      assign body_font_bold_italic = body_font_bold | font_modify: 'style', 'italic'
+    %}
+
+    <style>
+      {{ settings.font_heading | font_face: font_display: 'swap' }}
+      {{ settings.font_body | font_face: font_display: 'swap' }}
+      {{ body_font_bold | font_face: font_display: 'swap' }}
+      {{ body_font_italic | font_face: font_display: 'swap' }}
+      {{ body_font_bold_italic | font_face: font_display: 'swap' }}
+
+      :root {
+        --color-primary-dark: {{ settings.color_primary }};
+        --color-secondary-dark: {{ settings.color_secondary }};
+        --color-accent-dark: {{ settings.color_accent_dark }};
+        --color-accent-warm: {{ settings.color_accent }};
+        --color-black: {{ settings.color_text }};
+        --color-bg-light: {{ settings.color_background }};
+        --color-bg-cream: {{ settings.color_background_cream }};
+        --color-white: {{ settings.color_white }};
+        --color-text-muted: {{ settings.color_text_muted }};
+        --color-border-subtle: rgba(142, 134, 106, 0.3);
+
+        --font-heading-family: {{ settings.font_heading.family }}, {{ settings.font_heading.fallback_families }};
+        --font-heading-style: {{ settings.font_heading.style }};
+        --font-heading-weight: {{ settings.font_heading.weight }};
+
+        --font-body-family: {{ settings.font_body.family }}, {{ settings.font_body.fallback_families }};
+        --font-body-style: {{ settings.font_body.style }};
+        --font-body-weight: {{ settings.font_body.weight }};
+
+        --font-size-base: {{ settings.font_size_base }}px;
+
+        --spacing-xs: 8px;
+        --spacing-sm: 16px;
+        --spacing-md: 32px;
+        --spacing-lg: 64px;
+        --spacing-xl: 96px;
+        --spacing-2xl: 128px;
+      }
+    </style>
+
+    {{ content_for_header }}
+  </head>
+
+  <body class="template-{{ template.name }}{% if template.suffix != blank %} template-{{ template.name }}-{{ template.suffix }}{% endif %}">
+
+    <a class="skip-to-content-link" href="#MainContent">
+      {{ 'accessibility.skip_to_content' | t }}
+    </a>
+
+    {%- sections 'header' -%}
+
+    {%- if settings.cart_drawer_enabled -%}
+      {%- sections 'cart-drawer' -%}
+    {%- endif -%}
+
+    <main id="MainContent" class="content-for-layout" role="main" tabindex="-1">
+      {{ content_for_layout }}
+    </main>
+
+    {%- sections 'footer' -%}
+
+    <div id="cart-overlay" class="cart-overlay" aria-hidden="true"></div>
+
+    <script>
+      // Theme globals
+      window.theme = {
+        cartDrawerEnabled: {{ settings.cart_drawer_enabled | json }},
+        freeShippingThreshold: {{ settings.free_shipping_threshold | json }},
+        currency: {{ cart.currency.iso_code | json }},
+        moneyFormat: {{ shop.money_format | json }},
+        routes: {
+          cart_url: '{{ routes.cart_url }}',
+          cart_add_url: '{{ routes.cart_add_url }}',
+          cart_change_url: '{{ routes.cart_change_url }}',
+          root_url: '{{ routes.root_url }}'
+        }
+      };
+    </script>
+
+    <script src="{{ 'base.js' | asset_url }}" defer="defer"></script>
+
+    {%- if settings.cart_drawer_enabled -%}
+      <script src="{{ 'cart-drawer.js' | asset_url }}" defer="defer"></script>
+    {%- endif -%}
+
+    {%- comment -%} Structured data for SEO {%- endcomment -%}
+    {%- if template.name == 'product' -%}
+      <script type="application/ld+json">
+        {
+          "@context": "http://schema.org/",
+          "@type": "Product",
+          "name": {{ product.title | json }},
+          "url": {{ shop.url | append: product.url | json }},
+          {%- if product.featured_image -%}
+            "image": {{ product.featured_image | image_url: width: 1200 | prepend: 'https:' | json }},
+          {%- endif -%}
+          "description": {{ product.description | strip_html | json }},
+          {%- if product.selected_or_first_available_variant.sku != blank -%}
+            "sku": {{ product.selected_or_first_available_variant.sku | json }},
+          {%- endif -%}
+          "brand": {
+            "@type": "Brand",
+            "name": {{ product.vendor | json }}
+          },
+          "offers": [
+            {%- for variant in product.variants -%}
+              {
+                "@type": "Offer",
+                "availability": "http://schema.org/{% if variant.available %}InStock{% else %}OutOfStock{% endif %}",
+                "price": {{ variant.price | divided_by: 100.0 | json }},
+                "priceCurrency": {{ cart.currency.iso_code | json }},
+                "url": {{ shop.url | append: variant.url | json }}
+              }{%- unless forloop.last -%},{%- endunless -%}
+            {%- endfor -%}
+          ]
+        }
+      </script>
+    {%- endif -%}
+
+  </body>
+</html>

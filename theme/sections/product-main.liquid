@@ -1,0 +1,365 @@
+{{ 'section-product-main.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign current_variant = product.selected_or_first_available_variant
+  assign featured_media = current_variant.featured_media | default: product.featured_media
+-%}
+
+<section class="product-main" id="ProductMain-{{ section.id }}" data-section-id="{{ section.id }}">
+  <div class="container">
+    <div class="product-main__grid">
+
+      {%- comment -%} === IMAGE GALLERY === {%- endcomment -%}
+      <div class="product-main__gallery">
+        <div class="product-main__main-image-wrap" id="ProductMainImage">
+          {%- if product.media.size > 0 -%}
+            {%- for media in product.media -%}
+              <div
+                class="product-main__media{% unless media == featured_media %} product-main__media--hidden{% endunless %}"
+                data-media-id="{{ media.id }}"
+              >
+                {%- if media.media_type == 'image' -%}
+                  {{ media | image_url: width: 1200 | image_tag:
+                    loading: forloop.first | iif: 'eager' : 'lazy',
+                    fetchpriority: forloop.first | iif: 'high' : 'auto',
+                    width: 1200,
+                    class: 'product-main__image',
+                    alt: media.alt | escape,
+                    sizes: '(min-width: 1024px) 55vw, 100vw'
+                  }}
+                {%- endif -%}
+              </div>
+            {%- endfor -%}
+          {%- else -%}
+            {{ 'product-1' | placeholder_svg_tag: 'product-main__image product-main__image--placeholder' }}
+          {%- endif -%}
+        </div>
+
+        {%- if product.media.size > 1 -%}
+          <div class="product-main__thumbnails" role="list">
+            {%- for media in product.media -%}
+              <button
+                type="button"
+                class="product-main__thumb{% if media == featured_media %} product-main__thumb--active{% endif %}"
+                data-media-id="{{ media.id }}"
+                aria-label="{{ 'products.product.media.load_image' | t: index: forloop.index }}"
+                role="listitem"
+              >
+                {{ media | image_url: width: 120 | image_tag:
+                  loading: 'lazy',
+                  width: 120,
+                  height: 120,
+                  class: 'product-main__thumb-image',
+                  alt: media.alt | escape
+                }}
+              </button>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+      </div>
+
+      {%- comment -%} === PRODUCT INFO === {%- endcomment -%}
+      <div class="product-main__info{% if section.settings.enable_sticky %} product-main__info--sticky{% endif %}">
+
+        {%- if section.settings.show_vendor and product.vendor != blank -%}
+          <p class="product-main__vendor">{{ product.vendor }}</p>
+        {%- endif -%}
+
+        <h1 class="product-main__title">{{ product.title }}</h1>
+
+        {%- render 'price', product: product, use_variant: true, show_badges: true -%}
+
+        {%- unless product.has_only_default_variant -%}
+          <div class="product-main__variants" id="ProductVariants">
+            {%- for option in product.options_with_values -%}
+              <div class="product-main__option">
+                <p class="product-main__option-label">{{ option.name }}</p>
+                <div class="product-main__option-values">
+                  {%- for value in option.values -%}
+                    {%- assign variant_option = 'option' | append: option.position -%}
+                    {%- assign is_available = false -%}
+                    {%- for variant in product.variants -%}
+                      {%- if variant[variant_option] == value and variant.available -%}
+                        {%- assign is_available = true -%}
+                      {%- endif -%}
+                    {%- endfor -%}
+                    <button
+                      type="button"
+                      class="product-main__variant-btn{% if current_variant[variant_option] == value %} product-main__variant-btn--selected{% endif %}{% unless is_available %} product-main__variant-btn--unavailable{% endunless %}"
+                      data-option-position="{{ option.position }}"
+                      data-option-value="{{ value | escape }}"
+                      {% unless is_available %}aria-disabled="true"{% endunless %}
+                    >
+                      {{ value }}
+                    </button>
+                  {%- endfor -%}
+                </div>
+              </div>
+            {%- endfor -%}
+          </div>
+        {%- endunless -%}
+
+        <div class="product-main__quantity">
+          <p class="product-main__qty-label">{{ 'products.product.quantity' | t }}</p>
+          <div class="product-main__qty-control">
+            <button type="button" class="product-main__qty-btn" aria-label="{{ 'products.product.decrease_quantity' | t }}" data-qty-change="-1">−</button>
+            <input
+              type="number"
+              name="quantity"
+              id="ProductQuantity"
+              value="1"
+              min="1"
+              aria-label="{{ 'products.product.quantity' | t }}"
+              class="product-main__qty-input"
+            >
+            <button type="button" class="product-main__qty-btn" aria-label="{{ 'products.product.increase_quantity' | t }}" data-qty-change="1">+</button>
+          </div>
+        </div>
+
+        <div class="product-main__add-to-cart">
+          {%- form 'product', product, id: 'ProductForm', data-product-form: '' -%}
+            <input type="hidden" name="id" value="{{ current_variant.id }}" id="ProductVariantId">
+            <button
+              type="submit"
+              name="add"
+              class="btn btn--solid product-main__add-btn{% unless current_variant.available %} btn--disabled{% endunless %}"
+              {% unless current_variant.available %}disabled aria-disabled="true"{% endunless %}
+              aria-label="{{ 'products.product.add_to_cart' | t }}: {{ product.title | escape }}"
+            >
+              {%- if current_variant.available -%}
+                {{ 'products.product.add_to_cart' | t }}
+              {%- else -%}
+                {{ 'products.product.sold_out' | t }}
+              {%- endif -%}
+            </button>
+          {%- endform -%}
+
+          <button type="button" class="product-main__wishlist-btn" aria-label="{{ 'products.product.add_to_wishlist' | t }}">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+            </svg>
+            {{ 'products.product.add_to_wishlist' | t }}
+          </button>
+        </div>
+
+        {%- comment -%} Accordion blocks {%- endcomment -%}
+        <div class="product-main__accordions">
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'accordion_item' -%}
+              <div
+                class="accordion{% if block.settings.open_by_default %} accordion--open{% endif %}"
+                {{ block.shopify_attributes }}
+              >
+                <button
+                  type="button"
+                  class="accordion__trigger"
+                  aria-expanded="{{ block.settings.open_by_default }}"
+                  aria-controls="Accordion-{{ block.id }}"
+                >
+                  {{ block.settings.heading }}
+                  <svg class="accordion__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                  </svg>
+                </button>
+                <div class="accordion__content" id="Accordion-{{ block.id }}" aria-hidden="{{ block.settings.open_by_default | default: true | default: false }}">
+                  {%- if block.settings.heading == 'Description' -%}
+                    <div class="rte">{{ product.description }}</div>
+                  {%- elsif block.settings.content != blank -%}
+                    <div class="rte">{{ block.settings.content }}</div>
+                  {%- endif -%}
+                </div>
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+
+        {%- if section.settings.show_share -%}
+          <div class="product-main__share">
+            <p class="product-main__share-label">{{ 'general.share.title' | t }}</p>
+            <div class="product-main__share-links">
+              <a href="https://www.facebook.com/sharer.php?u={{ shop.url | append: product.url | url_encode }}" target="_blank" rel="noopener noreferrer" aria-label="Share on Facebook" class="product-main__share-link">Facebook</a>
+              <a href="https://twitter.com/intent/tweet?text={{ product.title | url_encode }}&url={{ shop.url | append: product.url | url_encode }}" target="_blank" rel="noopener noreferrer" aria-label="Share on Twitter" class="product-main__share-link">Twitter</a>
+            </div>
+          </div>
+        {%- endif -%}
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+(function() {
+  const section = document.getElementById('ProductMain-{{ section.id }}');
+  if (!section) return;
+
+  // Thumbnail switcher
+  const thumbs = section.querySelectorAll('.product-main__thumb');
+  const mediaItems = section.querySelectorAll('.product-main__media');
+
+  thumbs.forEach(thumb => {
+    thumb.addEventListener('click', () => {
+      const mediaId = thumb.dataset.mediaId;
+      thumbs.forEach(t => t.classList.remove('product-main__thumb--active'));
+      mediaItems.forEach(m => m.classList.add('product-main__media--hidden'));
+      thumb.classList.add('product-main__thumb--active');
+      const targetMedia = section.querySelector('[data-media-id="' + mediaId + '"]');
+      if (targetMedia) targetMedia.classList.remove('product-main__media--hidden');
+    });
+  });
+
+  // Quantity control
+  const qtyInput = section.querySelector('.product-main__qty-input');
+  section.querySelectorAll('[data-qty-change]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const change = parseInt(btn.dataset.qtyChange);
+      const current = parseInt(qtyInput.value) || 1;
+      const newVal = Math.max(1, current + change);
+      qtyInput.value = newVal;
+    });
+  });
+
+  // Variant selection
+  const variantBtns = section.querySelectorAll('.product-main__variant-btn');
+  const variantIdInput = document.getElementById('ProductVariantId');
+  const addBtn = section.querySelector('.product-main__add-btn');
+
+  const productData = {{ product.variants | json }};
+
+  variantBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const position = parseInt(btn.dataset.optionPosition);
+      const value = btn.dataset.optionValue;
+
+      // Update active state for this option group
+      section.querySelectorAll('[data-option-position="' + position + '"]').forEach(b => {
+        b.classList.remove('product-main__variant-btn--selected');
+      });
+      btn.classList.add('product-main__variant-btn--selected');
+
+      // Find matching variant
+      const selectedOptions = {};
+      section.querySelectorAll('.product-main__variant-btn--selected').forEach(b => {
+        selectedOptions[b.dataset.optionPosition] = b.dataset.optionValue;
+      });
+
+      const matchedVariant = productData.find(v => {
+        return Object.entries(selectedOptions).every(([pos, val]) => {
+          return v['option' + pos] === val;
+        });
+      });
+
+      if (matchedVariant) {
+        variantIdInput.value = matchedVariant.id;
+        if (matchedVariant.available) {
+          addBtn.disabled = false;
+          addBtn.setAttribute('aria-disabled', 'false');
+          addBtn.classList.remove('btn--disabled');
+          addBtn.textContent = '{{ "products.product.add_to_cart" | t }}';
+        } else {
+          addBtn.disabled = true;
+          addBtn.setAttribute('aria-disabled', 'true');
+          addBtn.classList.add('btn--disabled');
+          addBtn.textContent = '{{ "products.product.sold_out" | t }}';
+        }
+      }
+    });
+  });
+
+  // Accordion
+  section.querySelectorAll('.accordion__trigger').forEach(trigger => {
+    trigger.addEventListener('click', () => {
+      const accordion = trigger.closest('.accordion');
+      const isOpen = accordion.classList.contains('accordion--open');
+      accordion.classList.toggle('accordion--open', !isOpen);
+      trigger.setAttribute('aria-expanded', !isOpen);
+      const content = trigger.nextElementSibling;
+      content.setAttribute('aria-hidden', isOpen);
+    });
+  });
+
+  // Cart form
+  const productForm = document.getElementById('ProductForm');
+  if (productForm && window.theme && window.theme.cartDrawerEnabled) {
+    productForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData(productForm);
+      formData.set('quantity', qtyInput ? qtyInput.value : 1);
+
+      try {
+        const response = await fetch(window.theme.routes.cart_add_url + '.js', {
+          method: 'POST',
+          body: formData,
+          headers: { 'X-Requested-With': 'XMLHttpRequest' }
+        });
+        const data = await response.json();
+        if (response.ok) {
+          document.dispatchEvent(new CustomEvent('cart:item-added', { detail: data }));
+          document.dispatchEvent(new CustomEvent('cart:open'));
+        }
+      } catch (err) {
+        console.error('Add to cart failed', err);
+      }
+    });
+  }
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Product Main",
+  "class": "section-product-main",
+  "tag": "div",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "enable_sticky",
+      "default": true,
+      "label": "Enable sticky product info"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "default": true,
+      "label": "Show vendor"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_zoom",
+      "default": true,
+      "label": "Enable image zoom on hover"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_share",
+      "default": true,
+      "label": "Show share buttons"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "accordion_item",
+      "name": "Accordion item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Description"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Content (leave empty to use product description)"
+        },
+        {
+          "type": "checkbox",
+          "id": "open_by_default",
+          "label": "Open by default",
+          "default": false
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

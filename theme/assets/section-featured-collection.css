@@ -1,0 +1,193 @@
+/* =============================================
+   SECTION-FEATURED-COLLECTION.CSS
+   ============================================= */
+
+.featured-collection__header {
+  text-align: center;
+  margin-bottom: var(--spacing-lg, 64px);
+}
+
+.featured-collection__heading {
+  font-family: var(--font-heading-family);
+  font-size: clamp(1.8rem, 3vw, 2.8rem);
+  font-weight: 300;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-primary-dark);
+  margin-bottom: var(--spacing-xs, 8px);
+}
+
+.featured-collection__subheading {
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+  color: var(--color-text-muted);
+}
+
+/* ---- ASYMMETRIC GRID ---- */
+.featured-collection__grid--asymmetric {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: auto auto;
+  gap: var(--spacing-sm, 16px);
+}
+
+.featured-collection__card-wrap--featured {
+  grid-row: span 2;
+}
+
+@media (max-width: 768px) {
+  .featured-collection__grid--asymmetric {
+    grid-template-columns: 1fr 1fr;
+  }
+  .featured-collection__card-wrap--featured {
+    grid-column: span 2;
+    grid-row: span 1;
+  }
+}
+
+@media (max-width: 480px) {
+  .featured-collection__grid--asymmetric {
+    grid-template-columns: 1fr;
+  }
+  .featured-collection__card-wrap--featured {
+    grid-column: span 1;
+  }
+}
+
+/* ---- EQUAL GRID ---- */
+.featured-collection__grid--equal {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-sm, 16px);
+}
+
+@media (max-width: 768px) {
+  .featured-collection__grid--equal {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .featured-collection__grid--equal {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---- 2 COL GRID ---- */
+.featured-collection__grid--two_col {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing-sm, 16px);
+}
+
+@media (max-width: 480px) {
+  .featured-collection__grid--two_col {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---- FOOTER ---- */
+.featured-collection__footer {
+  text-align: center;
+  margin-top: var(--spacing-lg, 64px);
+}
+
+/* ---- COLLECTION GRID ---- */
+.collection-grid__header {
+  margin-bottom: var(--spacing-lg, 64px);
+}
+
+.collection-grid__banner {
+  margin-bottom: var(--spacing-md, 32px);
+  overflow: hidden;
+  max-height: 300px;
+}
+
+.collection-grid__banner-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.collection-grid__title {
+  font-size: clamp(1.6rem, 3vw, 2.4rem);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  font-weight: 300;
+  color: var(--color-primary-dark);
+  margin-bottom: 12px;
+}
+
+.collection-grid__description {
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+  max-width: 600px;
+  margin-top: 12px;
+}
+
+.collection-grid__sort {
+  margin-top: var(--spacing-md, 32px);
+}
+
+.collection-grid__sort-select {
+  padding: 10px 20px;
+  border: 1px solid var(--color-border-subtle);
+  background: transparent;
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  color: var(--color-black);
+}
+
+.collection-grid__products--2-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-sm, 16px);
+}
+
+.collection-grid__products--3-col {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-sm, 16px);
+}
+
+.collection-grid__products--4-col {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--spacing-sm, 16px);
+}
+
+@media (max-width: 768px) {
+  .collection-grid__products--3-col,
+  .collection-grid__products--4-col {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .collection-grid__products--2-col,
+  .collection-grid__products--3-col,
+  .collection-grid__products--4-col {
+    grid-template-columns: 1fr;
+  }
+}
+
+.collection-grid__empty {
+  text-align: center;
+  padding: var(--spacing-xl, 96px) 0;
+  color: var(--color-text-muted);
+}
+
+.collection-grid__pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-md, 32px);
+  margin-top: var(--spacing-xl, 96px);
+}
+
+.collection-grid__pagination-info {
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  color: var(--color-text-muted);
+}

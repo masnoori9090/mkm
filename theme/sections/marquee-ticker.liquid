@@ -1,0 +1,82 @@
+{{ 'section-marquee.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign speed = section.settings.speed | default: 30
+  assign font_size = section.settings.font_size | default: 13
+-%}
+
+<section
+  class="marquee-ticker"
+  id="MarqueeTicker-{{ section.id }}"
+  style="
+    --marquee-speed: {{ speed }}s;
+    --marquee-font-size: {{ font_size }}px;
+    --marquee-color: {{ section.settings.text_color }};
+    --marquee-bg: {{ section.settings.bg_color }};
+  "
+  aria-label="{{ section.settings.marquee_text }}"
+  aria-hidden="true"
+>
+  <div class="marquee-ticker__track">
+    {%- assign marquee_text = section.settings.marquee_text | default: 'NICHE FRAGRANCES • ARTISAN CRAFTED • WORLDWIDE SHIPPING' -%}
+    {%- for i in (1..4) -%}
+      <span class="marquee-ticker__item">{{ marquee_text }}</span>
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Marquee Ticker",
+  "class": "section-marquee-ticker",
+  "tag": "div",
+  "settings": [
+    {
+      "type": "text",
+      "id": "marquee_text",
+      "label": "Marquee text",
+      "default": "NICHE FRAGRANCES • ARTISAN CRAFTED • WORLDWIDE SHIPPING • DUBAI'S FINEST PERFUMERY • EXCLUSIVE COLLECTIONS"
+    },
+    {
+      "type": "range",
+      "id": "speed",
+      "min": 10,
+      "max": 60,
+      "step": 5,
+      "default": 30,
+      "unit": "s",
+      "label": "Scroll speed (seconds)"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#8E866A"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background color",
+      "default": "#F5F2ED"
+    },
+    {
+      "type": "range",
+      "id": "font_size",
+      "min": 10,
+      "max": 24,
+      "step": 1,
+      "default": 13,
+      "unit": "px",
+      "label": "Font size"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Marquee Ticker",
+      "settings": {
+        "marquee_text": "NICHE FRAGRANCES • ARTISAN CRAFTED • WORLDWIDE SHIPPING • DUBAI'S FINEST PERFUMERY • EXCLUSIVE COLLECTIONS"
+      }
+    }
+  ]
+}
+{% endschema %}

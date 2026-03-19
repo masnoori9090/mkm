@@ -1,0 +1,46 @@
+{
+  "sections": {
+    "product-main": {
+      "type": "product-main",
+      "blocks": {
+        "description": {
+          "type": "accordion_item",
+          "settings": {
+            "heading": "Description",
+            "open_by_default": true
+          }
+        },
+        "fragrance-notes": {
+          "type": "accordion_item",
+          "settings": {
+            "heading": "Fragrance Notes",
+            "open_by_default": false
+          }
+        },
+        "shipping": {
+          "type": "accordion_item",
+          "settings": {
+            "heading": "Shipping & Returns",
+            "content": "<p>Free shipping on orders over AED 200. Returns accepted within 30 days of purchase for unopened products.</p>",
+            "open_by_default": false
+          }
+        }
+      },
+      "block_order": ["description", "fragrance-notes", "shipping"],
+      "settings": {
+        "enable_sticky": true,
+        "show_vendor": true,
+        "enable_zoom": true,
+        "show_share": true
+      }
+    },
+    "recommendations": {
+      "type": "product-recommendations",
+      "settings": {
+        "heading": "YOU MAY ALSO LIKE",
+        "products_to_show": 4
+      }
+    }
+  },
+  "order": ["product-main", "recommendations"]
+}

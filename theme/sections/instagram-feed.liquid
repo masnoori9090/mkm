@@ -1,0 +1,128 @@
+{{ 'section-instagram.css' | asset_url | stylesheet_tag }}
+
+<section class="instagram-feed" id="InstagramFeed-{{ section.id }}">
+  <div class="container">
+    {%- if section.settings.heading != blank -%}
+      <h2 class="instagram-feed__heading reveal-on-scroll">
+        {%- if section.settings.instagram_url != blank -%}
+          <a href="{{ section.settings.instagram_url }}" target="_blank" rel="noopener noreferrer" class="instagram-feed__heading-link">
+            {{ section.settings.heading }}
+          </a>
+        {%- else -%}
+          {{ section.settings.heading }}
+        {%- endif -%}
+      </h2>
+    {%- endif -%}
+  </div>
+
+  <div class="instagram-feed__grid">
+    {%- liquid
+      assign images_to_show = section.settings.images_to_show | default: 6
+      assign block_count = section.blocks | size
+    -%}
+
+    {%- if block_count > 0 -%}
+      {%- for block in section.blocks limit: images_to_show -%}
+        <div class="instagram-feed__item reveal-on-scroll" style="--reveal-delay: {{ forloop.index0 | times: 0.08 }}s;" {{ block.shopify_attributes }}>
+          {%- if block.settings.link != blank -%}
+            <a href="{{ block.settings.link }}" target="_blank" rel="noopener noreferrer" class="instagram-feed__item-link" aria-label="{{ 'sections.instagram.view_on_instagram' | t }}">
+          {%- else -%}
+            <div class="instagram-feed__item-link">
+          {%- endif -%}
+            {%- if block.settings.image != blank -%}
+              {{ block.settings.image | image_url: width: 600 | image_tag:
+                loading: 'lazy',
+                width: 600,
+                height: 600,
+                class: 'instagram-feed__image',
+                alt: 'Instagram post',
+                sizes: '(min-width: 768px) 16vw, 50vw'
+              }}
+            {%- else -%}
+              {{ 'image' | placeholder_svg_tag: 'instagram-feed__image instagram-feed__image--placeholder' }}
+            {%- endif -%}
+            <div class="instagram-feed__overlay">
+              <svg class="instagram-feed__icon" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+              </svg>
+            </div>
+          {%- if block.settings.link != blank -%}
+            </a>
+          {%- else -%}
+            </div>
+          {%- endif -%}
+        </div>
+      {%- endfor -%}
+    {%- else -%}
+      {%- for i in (1..images_to_show) -%}
+        <div class="instagram-feed__item reveal-on-scroll" style="--reveal-delay: {{ forloop.index0 | times: 0.08 }}s;">
+          <div class="instagram-feed__item-link">
+            {{ 'image' | placeholder_svg_tag: 'instagram-feed__image instagram-feed__image--placeholder' }}
+            <div class="instagram-feed__overlay">
+              <svg class="instagram-feed__icon" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+      {%- endfor -%}
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Instagram Feed",
+  "class": "section-instagram-feed",
+  "tag": "div",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "FOLLOW @GETANYSCENT"
+    },
+    {
+      "type": "url",
+      "id": "instagram_url",
+      "label": "Instagram profile URL"
+    },
+    {
+      "type": "range",
+      "id": "images_to_show",
+      "min": 4,
+      "max": 6,
+      "step": 1,
+      "default": 6,
+      "label": "Images to show"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "instagram_image",
+      "name": "Instagram image",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Post link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Instagram Feed"
+    }
+  ]
+}
+{% endschema %}

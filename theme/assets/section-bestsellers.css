@@ -1,0 +1,105 @@
+/* =============================================
+   SECTION-BESTSELLERS.CSS — Carousel
+   ============================================= */
+
+.bestsellers {
+  padding: var(--spacing-xl, 96px) 0;
+  overflow: hidden;
+}
+
+.bestsellers__heading {
+  font-family: var(--font-heading-family);
+  font-size: clamp(1.8rem, 3vw, 2.8rem);
+  font-weight: 300;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-primary-dark);
+  margin-bottom: var(--spacing-lg, 64px);
+  text-align: center;
+}
+
+.bestsellers__carousel-wrap {
+  position: relative;
+  padding: 0 56px;
+}
+
+@media (max-width: 768px) {
+  .bestsellers__carousel-wrap {
+    padding: 0 16px;
+  }
+}
+
+.bestsellers__carousel {
+  display: flex;
+  gap: var(--spacing-sm, 16px);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 8px;
+  scrollbar-width: none;
+}
+
+.bestsellers__carousel::-webkit-scrollbar {
+  display: none;
+}
+
+.bestsellers__item {
+  flex: 0 0 calc(25% - 12px);
+  scroll-snap-align: start;
+  min-width: 240px;
+}
+
+@media (max-width: 1024px) {
+  .bestsellers__item {
+    flex: 0 0 calc(33.333% - 11px);
+  }
+}
+
+@media (max-width: 768px) {
+  .bestsellers__item {
+    flex: 0 0 calc(50% - 8px);
+  }
+}
+
+@media (max-width: 480px) {
+  .bestsellers__item {
+    flex: 0 0 calc(80%);
+  }
+}
+
+/* ---- ARROWS ---- */
+.bestsellers__arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  width: 48px;
+  height: 48px;
+  background: var(--color-bg-cream);
+  border: 1px solid var(--color-accent-warm);
+  color: var(--color-accent-warm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s;
+}
+
+.bestsellers__arrow:hover {
+  background: var(--color-accent-warm);
+  color: var(--color-primary-dark);
+}
+
+.bestsellers__arrow--prev {
+  left: 0;
+}
+
+.bestsellers__arrow--next {
+  right: 0;
+}
+
+@media (max-width: 768px) {
+  .bestsellers__arrow {
+    display: none;
+  }
+}

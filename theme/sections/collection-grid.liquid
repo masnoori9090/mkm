@@ -1,0 +1,117 @@
+{{ 'section-featured-collection.css' | asset_url | stylesheet_tag }}
+{{ 'component-product-card.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign products_per_row = section.settings.products_per_row | default: 3
+  assign sort_by = collection.sort_by | default: collection.default_sort_by
+-%}
+
+<section class="collection-grid" id="CollectionGrid">
+  <div class="container">
+
+    <div class="collection-grid__header">
+      <div class="collection-grid__meta">
+        {%- if collection.image != blank -%}
+          <div class="collection-grid__banner">
+            {{ collection.image | image_url: width: 1600 | image_tag:
+              loading: 'eager',
+              width: 1600,
+              class: 'collection-grid__banner-image',
+              sizes: '100vw'
+            }}
+          </div>
+        {%- endif -%}
+        <h1 class="collection-grid__title">{{ collection.title }}</h1>
+        {%- if collection.description != blank -%}
+          <div class="collection-grid__description rte">{{ collection.description }}</div>
+        {%- endif -%}
+      </div>
+
+      {%- if section.settings.show_sort -%}
+        <div class="collection-grid__sort">
+          <label for="SortBy" class="visually-hidden">{{ 'collections.sorting.title' | t }}</label>
+          <select name="sort_by" id="SortBy" class="collection-grid__sort-select" data-default-sortby="{{ collection.default_sort_by }}">
+            {%- for option in collection.sort_options -%}
+              <option value="{{ option.value }}" {% if option.value == sort_by %}selected="selected"{% endif %}>
+                {{ option.name }}
+              </option>
+            {%- endfor -%}
+          </select>
+        </div>
+      {%- endif -%}
+    </div>
+
+    {%- paginate collection.products by 24 -%}
+      {%- if collection.products.size > 0 -%}
+        <div class="collection-grid__products collection-grid__products--{{ products_per_row }}-col">
+          {%- for product in collection.products -%}
+            <div class="collection-grid__product-wrap reveal-on-scroll" style="--reveal-delay: {{ forloop.index0 | modulo: products_per_row | times: 0.1 }}s;">
+              {%- render 'product-card', product: product -%}
+            </div>
+          {%- endfor -%}
+        </div>
+      {%- else -%}
+        <div class="collection-grid__empty">
+          <p>{{ 'collections.general.no_matches' | t }}</p>
+        </div>
+      {%- endif -%}
+
+      {%- if paginate.pages > 1 -%}
+        <div class="collection-grid__pagination">
+          {%- if paginate.previous -%}
+            <a href="{{ paginate.previous.url }}" class="btn btn--outline">{{ 'general.pagination.previous' | t }}</a>
+          {%- endif -%}
+          <span class="collection-grid__pagination-info">{{ paginate.current_page }} / {{ paginate.pages }}</span>
+          {%- if paginate.next -%}
+            <a href="{{ paginate.next.url }}" class="btn btn--outline">{{ 'general.pagination.next' | t }}</a>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    {%- endpaginate -%}
+
+  </div>
+</section>
+
+<script>
+(function() {
+  const sortSelect = document.getElementById('SortBy');
+  if (sortSelect) {
+    sortSelect.addEventListener('change', () => {
+      const url = new URL(window.location.href);
+      url.searchParams.set('sort_by', sortSelect.value);
+      window.location.href = url.toString();
+    });
+  }
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Collection Grid",
+  "class": "section-collection-grid",
+  "tag": "div",
+  "settings": [
+    {
+      "type": "range",
+      "id": "products_per_row",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 3,
+      "label": "Products per row"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_sort",
+      "default": true,
+      "label": "Show sort dropdown"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_filters",
+      "default": true,
+      "label": "Show filter options"
+    }
+  ]
+}
+{% endschema %}

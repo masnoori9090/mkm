@@ -1,0 +1,35 @@
+/* =============================================
+   SECTION-MARQUEE.CSS — Marquee Ticker
+   ============================================= */
+
+.marquee-ticker {
+  background: var(--marquee-bg, var(--color-bg-light));
+  padding: 16px 0;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.marquee-ticker__track {
+  display: inline-flex;
+  align-items: center;
+  animation: marquee var(--marquee-speed, 30s) linear infinite;
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-ticker__track {
+    animation: none;
+    overflow-x: auto;
+  }
+}
+
+.marquee-ticker__item {
+  display: inline-block;
+  padding: 0 40px;
+  font-family: var(--font-body-family);
+  font-size: var(--marquee-font-size, 13px);
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--marquee-color, var(--color-accent-warm));
+}

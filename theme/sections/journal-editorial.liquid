@@ -1,0 +1,117 @@
+{{ 'section-journal.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign blog_handle = section.settings.blog
+  assign articles_to_show = section.settings.articles_to_show | default: 3
+  assign layout = section.settings.layout | default: 'editorial'
+
+  if blog_handle != blank
+    assign blog_obj = blogs[blog_handle]
+  endif
+-%}
+
+<section class="journal journal--{{ layout }}" id="Journal-{{ section.id }}">
+  <div class="container">
+    {%- if section.settings.heading != blank -%}
+      <h2 class="journal__heading reveal-on-scroll">{{ section.settings.heading }}</h2>
+    {%- endif -%}
+
+    {%- if blog_obj != blank and blog_obj.articles_count > 0 -%}
+      <div class="journal__grid journal__grid--{{ layout }}">
+        {%- for article in blog_obj.articles limit: articles_to_show -%}
+          <article
+            class="journal__article{% if forloop.first and layout == 'editorial' %} journal__article--featured{% endif %} reveal-on-scroll"
+            style="--reveal-delay: {{ forloop.index0 | times: 0.12 }}s;"
+          >
+            <a href="{{ article.url }}" class="journal__article-link">
+              <div class="journal__article-image-wrap">
+                {%- if article.image != blank -%}
+                  {{ article.image | image_url: width: 900 | image_tag:
+                    loading: 'lazy',
+                    width: 900,
+                    class: 'journal__article-image',
+                    alt: article.title,
+                    sizes: '(min-width: 1024px) 60vw, 100vw'
+                  }}
+                {%- else -%}
+                  {{ 'collection-3' | placeholder_svg_tag: 'journal__article-placeholder' }}
+                {%- endif -%}
+                <div class="journal__article-overlay"></div>
+                <div class="journal__article-content">
+                  <p class="journal__article-date">{{ article.published_at | date: '%B %d, %Y' }}</p>
+                  <h3 class="journal__article-title">{{ article.title }}</h3>
+                </div>
+              </div>
+            </a>
+          </article>
+        {%- endfor -%}
+      </div>
+    {%- else -%}
+      {%- comment -%} Placeholder articles {%- endcomment -%}
+      <div class="journal__grid journal__grid--{{ layout }}">
+        {%- assign placeholder_articles = 'The Art of the Base Note,Fragrance Families Explained,How to Layer Scents' | split: ',' -%}
+        {%- for title in placeholder_articles limit: articles_to_show -%}
+          <article class="journal__article{% if forloop.first and layout == 'editorial' %} journal__article--featured{% endif %} reveal-on-scroll">
+            <div class="journal__article-link">
+              <div class="journal__article-image-wrap">
+                {{ 'collection-' | append: forloop.index | placeholder_svg_tag: 'journal__article-placeholder' }}
+                <div class="journal__article-overlay"></div>
+                <div class="journal__article-content">
+                  <p class="journal__article-date">March 2025</p>
+                  <h3 class="journal__article-title">{{ title }}</h3>
+                </div>
+              </div>
+            </div>
+          </article>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Journal / Editorial",
+  "class": "section-journal-editorial",
+  "tag": "div",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "THE JOURNAL"
+    },
+    {
+      "type": "blog",
+      "id": "blog",
+      "label": "Blog"
+    },
+    {
+      "type": "range",
+      "id": "articles_to_show",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "default": 3,
+      "label": "Articles to show"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "options": [
+        { "value": "editorial", "label": "Editorial (large + two stacked)" },
+        { "value": "equal", "label": "Equal columns" },
+        { "value": "list", "label": "List" }
+      ],
+      "default": "editorial"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Journal / Editorial"
+    }
+  ]
+}
+{% endschema %}
