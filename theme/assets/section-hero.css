@@ -1,0 +1,206 @@
+/* =============================================
+   SECTION-HERO.CSS — Hero Banner
+   ============================================= */
+
+.hero-banner {
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ---- FULL OVERLAY LAYOUT ---- */
+.hero-banner--full_overlay {
+  display: grid;
+  place-items: center;
+}
+
+.hero-banner--full_overlay .hero-banner__media {
+  position: absolute;
+  inset: 0;
+}
+
+.hero-banner--full_overlay .hero-banner__content--overlay {
+  position: relative;
+  z-index: 2;
+  padding: var(--spacing-xl, 96px) var(--spacing-lg, 64px);
+  text-align: center;
+  width: 100%;
+}
+
+.hero-banner__overlay {
+  position: absolute;
+  inset: 0;
+  background: var(--color-primary-dark);
+  z-index: 1;
+}
+
+/* ---- SPLIT LAYOUTS ---- */
+.hero-banner--image_left .hero-banner__split,
+.hero-banner--image_right .hero-banner__split {
+  display: grid;
+  grid-template-columns: 60% 40%;
+  min-height: 100vh;
+}
+
+.hero-banner--image_right .hero-banner__split {
+  grid-template-columns: 40% 60%;
+}
+
+.hero-banner--image_right .hero-banner__media--split {
+  order: 2;
+}
+
+.hero-banner--image_right .hero-banner__content--split {
+  order: 1;
+}
+
+@media (max-width: 1024px) {
+  .hero-banner--image_left .hero-banner__split,
+  .hero-banner--image_right .hero-banner__split {
+    grid-template-columns: 1fr;
+    grid-template-rows: 50vh auto;
+  }
+
+  .hero-banner--image_right .hero-banner__media--split,
+  .hero-banner--image_right .hero-banner__content--split {
+    order: unset;
+  }
+}
+
+/* ---- IMAGE ---- */
+.hero-banner__media--split {
+  overflow: hidden;
+  position: relative;
+}
+
+.hero-banner__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.hero-banner--parallax .hero-banner__image {
+  transform: scale(1.1);
+}
+
+.hero-banner__image--placeholder {
+  background: var(--color-accent-dark);
+  width: 100%;
+  height: 100%;
+  min-height: 400px;
+}
+
+/* ---- CONTENT SIDE ---- */
+.hero-banner__content--split {
+  background: var(--color-primary-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-xl, 96px) var(--spacing-lg, 64px);
+}
+
+@media (max-width: 1024px) {
+  .hero-banner__content--split {
+    padding: var(--spacing-lg, 64px) var(--spacing-md, 32px);
+  }
+}
+
+/* ---- TEXT ---- */
+.hero-banner__text {
+  max-width: 520px;
+  width: 100%;
+}
+
+.hero-banner__text--center {
+  text-align: center;
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+.hero-banner__text--right {
+  text-align: right;
+}
+
+.hero-banner__subtitle {
+  font-family: var(--font-heading-family);
+  font-style: italic;
+  font-size: 1rem;
+  font-weight: 300;
+  letter-spacing: 0.06em;
+  color: var(--color-accent-warm);
+  margin-bottom: var(--spacing-sm, 16px);
+}
+
+.hero-banner--full_overlay .hero-banner__subtitle,
+.hero-banner--full_overlay .hero-banner__heading,
+.hero-banner--full_overlay .hero-banner__desc,
+.hero-banner__content--split .hero-banner__subtitle,
+.hero-banner__content--split .hero-banner__heading,
+.hero-banner__content--split .hero-banner__desc {
+  color: inherit;
+}
+
+.hero-banner__content--split .hero-banner__subtitle {
+  color: var(--color-accent-warm);
+}
+
+.hero-banner__content--split .hero-banner__heading {
+  color: var(--color-white);
+}
+
+.hero-banner__content--split .hero-banner__desc {
+  color: rgba(255,255,255,0.65);
+}
+
+.hero-banner__heading {
+  font-family: var(--font-heading-family);
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  font-weight: 300;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-white);
+  line-height: 1.1;
+  margin-bottom: var(--spacing-md, 32px);
+}
+
+.hero-banner--full_overlay .hero-banner__heading {
+  color: var(--color-white);
+}
+
+.hero-banner__desc {
+  font-size: 0.9rem;
+  line-height: 1.85;
+  color: rgba(255,255,255,0.65);
+  margin-bottom: var(--spacing-md, 32px);
+  max-width: 420px;
+}
+
+.hero-banner__text--center .hero-banner__desc {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.hero-banner__cta {
+  margin-top: var(--spacing-md, 32px);
+}
+
+/* ---- SCROLL INDICATOR ---- */
+.hero-banner__scroll-indicator {
+  position: absolute;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.hero-banner__scroll-line {
+  display: block;
+  width: 1px;
+  height: 48px;
+  background: var(--color-accent-warm);
+  animation: scroll-bounce 1.8s ease-in-out infinite;
+}

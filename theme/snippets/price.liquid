@@ -1,0 +1,32 @@
+{%- comment -%}
+  Renders product price.
+  Usage: {% render 'price', product: product, use_variant: true, show_badges: false %}
+{%- endcomment -%}
+
+{%- liquid
+  if use_variant
+    assign target = product.selected_or_first_available_variant
+  else
+    assign target = product
+  endif
+
+  assign compare_at_price = target.compare_at_price
+  assign price = target.price | default: 1999
+  assign money_price = price | money
+
+  if settings.currency_code_enabled
+    assign money_price = price | money_with_currency
+  endif
+-%}
+
+<div class="price-wrapper{% if compare_at_price > price %} price-wrapper--sale{% endif %}">
+  {%- if compare_at_price > price -%}
+    <span class="price price--sale">{{ money_price }}</span>
+    <span class="price price--compare">
+      <span class="visually-hidden">{{ 'products.product.regular_price' | t }}</span>
+      {{ compare_at_price | money }}
+    </span>
+  {%- else -%}
+    <span class="price">{{ money_price }}</span>
+  {%- endif -%}
+</div>

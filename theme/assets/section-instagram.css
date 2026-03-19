@@ -1,0 +1,113 @@
+/* =============================================
+   SECTION-INSTAGRAM.CSS
+   ============================================= */
+
+.instagram-feed {
+  padding: var(--spacing-xl, 96px) 0;
+}
+
+.instagram-feed__heading {
+  font-family: var(--font-heading-family);
+  font-size: clamp(1.5rem, 2.5vw, 2.4rem);
+  font-weight: 300;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-primary-dark);
+  text-align: center;
+  margin-bottom: var(--spacing-lg, 64px);
+}
+
+.instagram-feed__heading-link {
+  position: relative;
+  display: inline-block;
+  transition: color 0.3s;
+}
+
+.instagram-feed__heading-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  right: 50%;
+  height: 1px;
+  background: var(--color-accent-warm);
+  transition: left 0.4s, right 0.4s;
+}
+
+.instagram-feed__heading-link:hover::after {
+  left: 0;
+  right: 0;
+}
+
+.instagram-feed__grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 0;
+}
+
+@media (max-width: 1024px) {
+  .instagram-feed__grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .instagram-feed__grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 360px) {
+  .instagram-feed__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.instagram-feed__item {
+  position: relative;
+  aspect-ratio: 1;
+  overflow: hidden;
+}
+
+.instagram-feed__item-link {
+  display: block;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.instagram-feed__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.instagram-feed__item:hover .instagram-feed__image {
+  transform: scale(1.06);
+}
+
+.instagram-feed__image--placeholder {
+  background: var(--color-bg-cream);
+  width: 100%;
+  height: 100%;
+}
+
+.instagram-feed__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(142, 134, 106, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+
+.instagram-feed__item:hover .instagram-feed__overlay {
+  opacity: 1;
+}
+
+.instagram-feed__icon {
+  color: var(--color-white);
+}

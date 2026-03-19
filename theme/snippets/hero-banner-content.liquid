@@ -1,0 +1,29 @@
+{%- liquid
+  assign text_align = section.settings.text_alignment | default: 'left'
+-%}
+
+<div class="hero-banner__text hero-banner__text--{{ text_align }}">
+  {%- if section.settings.subtitle != blank -%}
+    <p class="hero-banner__subtitle reveal-on-scroll">{{ section.settings.subtitle }}</p>
+  {%- endif -%}
+
+  {%- if section.settings.heading != blank -%}
+    <h1 class="hero-banner__heading reveal-on-scroll">{{ section.settings.heading }}</h1>
+  {%- endif -%}
+
+  {%- if section.settings.description != blank -%}
+    <div class="hero-banner__desc rte reveal-on-scroll">{{ section.settings.description }}</div>
+  {%- endif -%}
+
+  {%- if section.settings.button_label != blank -%}
+    <div class="hero-banner__cta reveal-on-scroll">
+      <a
+        href="{{ section.settings.button_link | default: '#' }}"
+        class="btn btn--outline"
+      >
+        {{ section.settings.button_label }}
+        {%- render 'icon-arrow' -%}
+      </a>
+    </div>
+  {%- endif -%}
+</div>

@@ -1,0 +1,12 @@
+{
+  "sections": {
+    "cart-items": {
+      "type": "rich-text",
+      "settings": {
+        "heading": "YOUR BAG",
+        "content_alignment": "left"
+      }
+    }
+  },
+  "order": ["cart-items"]
+}

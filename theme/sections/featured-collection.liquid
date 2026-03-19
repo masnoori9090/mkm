@@ -1,0 +1,124 @@
+{{ 'section-featured-collection.css' | asset_url | stylesheet_tag }}
+{{ 'component-product-card.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign collection = collections[section.settings.collection]
+  assign products_to_show = section.settings.products_to_show | default: 4
+  assign grid_layout = section.settings.grid_layout | default: 'asymmetric'
+-%}
+
+<section class="featured-collection featured-collection--{{ grid_layout }}" id="FeaturedCollection-{{ section.id }}">
+  <div class="container">
+
+    <div class="featured-collection__header reveal-on-scroll">
+      {%- if section.settings.heading != blank -%}
+        <h2 class="featured-collection__heading">{{ section.settings.heading }}</h2>
+      {%- endif -%}
+      {%- if section.settings.subheading != blank -%}
+        <p class="featured-collection__subheading">{{ section.settings.subheading }}</p>
+      {%- endif -%}
+    </div>
+
+    {%- if collection != blank and collection.products_count > 0 -%}
+      <div class="featured-collection__grid featured-collection__grid--{{ grid_layout }}">
+        {%- for product in collection.products limit: products_to_show -%}
+          <div class="featured-collection__card-wrap{% if forloop.first and grid_layout == 'asymmetric' %} featured-collection__card-wrap--featured{% endif %} reveal-on-scroll" style="--reveal-delay: {{ forloop.index0 | times: 0.1 }}s;">
+            {%- render 'product-card', product: product -%}
+          </div>
+        {%- endfor -%}
+      </div>
+    {%- else -%}
+      <div class="featured-collection__grid featured-collection__grid--{{ grid_layout }}">
+        {%- for i in (1..products_to_show) -%}
+          <div class="featured-collection__card-wrap{% if forloop.first and grid_layout == 'asymmetric' %} featured-collection__card-wrap--featured{% endif %} reveal-on-scroll">
+            <div class="product-card product-card--placeholder">
+              <div class="product-card__image-wrap">
+                {{ 'product-' | append: forloop.index | placeholder_svg_tag: 'product-card__placeholder-svg' }}
+              </div>
+              <div class="product-card__info">
+                <p class="product-card__title">Sample Product</p>
+                <p class="product-card__price">AED 450</p>
+              </div>
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+    {%- if section.settings.view_all_link != blank or section.settings.view_all_label != blank -%}
+      <div class="featured-collection__footer reveal-on-scroll">
+        <a
+          href="{{ section.settings.view_all_link | default: collection.url | default: '/collections/all' }}"
+          class="btn btn--outline"
+        >
+          {{ section.settings.view_all_label | default: 'View All' }}
+          {%- render 'icon-arrow' -%}
+        </a>
+      </div>
+    {%- endif -%}
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Featured Collection",
+  "class": "section-featured-collection",
+  "tag": "div",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "CURATED SELECTIONS"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Discover our most sought-after fragrances"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "min": 3,
+      "max": 6,
+      "step": 1,
+      "default": 4,
+      "label": "Products to show"
+    },
+    {
+      "type": "select",
+      "id": "grid_layout",
+      "label": "Grid layout",
+      "options": [
+        { "value": "asymmetric", "label": "Asymmetric (featured first card)" },
+        { "value": "equal", "label": "Equal columns" },
+        { "value": "two_col", "label": "2 columns" }
+      ],
+      "default": "asymmetric"
+    },
+    {
+      "type": "url",
+      "id": "view_all_link",
+      "label": "View all link"
+    },
+    {
+      "type": "text",
+      "id": "view_all_label",
+      "label": "View all button label",
+      "default": "View All"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured Collection"
+    }
+  ]
+}
+{% endschema %}

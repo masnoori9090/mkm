@@ -1,0 +1,11 @@
+{
+  "sections": {
+    "page-content": {
+      "type": "rich-text",
+      "settings": {
+        "content_alignment": "left"
+      }
+    }
+  },
+  "order": ["page-content"]
+}

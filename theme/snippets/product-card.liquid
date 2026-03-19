@@ -1,0 +1,78 @@
+{%- comment -%}
+  Renders a product card.
+  Usage: {% render 'product-card', product: product, show_add_to_bag: true %}
+{%- endcomment -%}
+
+{%- liquid
+  assign show_add_to_bag = show_add_to_bag | default: false
+  assign has_secondary = false
+  if product.media.size > 1
+    assign has_secondary = true
+    assign secondary_image = product.media[1]
+  endif
+-%}
+
+<div class="product-card" data-product-id="{{ product.id }}">
+
+  <div class="product-card__badges">
+    {%- if product.available == false -%}
+      <span class="product-card__badge">{{ 'products.product.sold_out' | t }}</span>
+    {%- elsif product.compare_at_price > product.price -%}
+      <span class="product-card__badge product-card__badge--sale">{{ 'products.product.sale' | t }}</span>
+    {%- endif -%}
+  </div>
+
+  <a href="{{ product.url }}" class="product-card__image-wrap hover-scale" aria-label="{{ product.title | escape }}">
+    {%- if product.featured_image != blank -%}
+      {{ product.featured_image | image_url: width: 800 | image_tag:
+        loading: 'lazy',
+        width: 800,
+        class: 'product-card__image',
+        alt: product.featured_image.alt | escape | default: product.title,
+        sizes: '(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw'
+      }}
+      {%- if has_secondary -%}
+        {{ secondary_image | image_url: width: 800 | image_tag:
+          loading: 'lazy',
+          width: 800,
+          class: 'product-card__secondary-image',
+          alt: secondary_image.alt | escape | default: product.title
+        }}
+      {%- endif -%}
+    {%- else -%}
+      {{ 'product-1' | placeholder_svg_tag: 'product-card__placeholder-svg' }}
+    {%- endif -%}
+
+    <div class="product-card__overlay" aria-hidden="true">
+      <div class="product-card__overlay-content">
+        <p class="product-card__overlay-title">{{ product.title }}</p>
+        <span class="product-card__overlay-shop">{{ 'products.product.shop_now' | t }}</span>
+      </div>
+    </div>
+  </a>
+
+  <div class="product-card__info">
+    {%- if product.vendor != blank -%}
+      <p class="product-card__vendor">{{ product.vendor }}</p>
+    {%- endif -%}
+    <h3 class="product-card__title">
+      <a href="{{ product.url }}">{{ product.title }}</a>
+    </h3>
+    <div class="product-card__price-wrap">
+      {%- render 'price', product: product -%}
+    </div>
+  </div>
+
+  {%- if show_add_to_bag -%}
+    <button
+      type="button"
+      class="product-card__add-btn"
+      data-product-id="{{ product.id }}"
+      data-variant-id="{{ product.selected_or_first_available_variant.id }}"
+      aria-label="{{ 'products.product.add_to_cart' | t }}: {{ product.title | escape }}"
+    >
+      {{ 'products.product.add_to_bag' | t }}
+    </button>
+  {%- endif -%}
+
+</div>

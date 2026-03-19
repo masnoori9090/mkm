@@ -1,0 +1,100 @@
+{{ 'section-split-feature.css' | asset_url | stylesheet_tag }}
+
+<section class="image-with-text image-with-text--image-{{ section.settings.image_position }}" id="ImageWithText-{{ section.id }}">
+  <div class="container">
+    <div class="image-with-text__grid">
+      <div class="image-with-text__image-col">
+        {%- if section.settings.image != blank -%}
+          <div class="image-with-text__image-wrap">
+            {{ section.settings.image | image_url: width: 900 | image_tag:
+              loading: 'lazy',
+              width: 900,
+              class: 'image-with-text__image',
+              sizes: '(min-width: 1024px) 50vw, 100vw'
+            }}
+          </div>
+        {%- else -%}
+          <div class="image-with-text__image-wrap">
+            {{ 'collection-2' | placeholder_svg_tag: 'image-with-text__placeholder' }}
+          </div>
+        {%- endif -%}
+      </div>
+      <div class="image-with-text__content-col">
+        <div class="image-with-text__content">
+          {%- if section.settings.subtitle != blank -%}
+            <p class="split-feature__subtitle reveal-on-scroll">{{ section.settings.subtitle }}</p>
+          {%- endif -%}
+          {%- if section.settings.heading != blank -%}
+            <h2 class="split-feature__heading reveal-on-scroll">{{ section.settings.heading }}</h2>
+          {%- endif -%}
+          {%- if section.settings.body_text != blank -%}
+            <div class="split-feature__body rte reveal-on-scroll">{{ section.settings.body_text }}</div>
+          {%- endif -%}
+          {%- if section.settings.button_label != blank -%}
+            <div class="split-feature__cta reveal-on-scroll">
+              <a href="{{ section.settings.button_link | default: '#' }}" class="btn btn--outline">
+                {{ section.settings.button_label }}
+                {%- render 'icon-arrow' -%}
+              </a>
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Image with Text",
+  "class": "section-image-with-text",
+  "tag": "div",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "select",
+      "id": "image_position",
+      "label": "Image position",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "right"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading"
+    },
+    {
+      "type": "richtext",
+      "id": "body_text",
+      "label": "Body text"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Image with Text"
+    }
+  ]
+}
+{% endschema %}

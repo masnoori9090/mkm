@@ -1,0 +1,70 @@
+<section class="rich-text rich-text--{{ section.settings.content_alignment }}" id="RichText-{{ section.id }}">
+  <div class="container">
+    <div class="rich-text__content">
+      {%- if section.settings.heading != blank -%}
+        <h2 class="rich-text__heading reveal-on-scroll">{{ section.settings.heading }}</h2>
+      {%- endif -%}
+
+      {%- if section.settings.body_text != blank -%}
+        <div class="rich-text__body rte reveal-on-scroll">{{ section.settings.body_text }}</div>
+      {%- else -%}
+        <div class="rich-text__body rte reveal-on-scroll">{{ page.content }}</div>
+      {%- endif -%}
+
+      {%- if section.settings.button_label != blank -%}
+        <div class="rich-text__cta reveal-on-scroll">
+          <a href="{{ section.settings.button_link | default: '#' }}" class="btn btn--outline">
+            {{ section.settings.button_label }}
+            {%- render 'icon-arrow' -%}
+          </a>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Rich Text",
+  "class": "section-rich-text",
+  "tag": "div",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading"
+    },
+    {
+      "type": "richtext",
+      "id": "body_text",
+      "label": "Body text (leave empty to use page content)"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "select",
+      "id": "content_alignment",
+      "label": "Content alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Rich Text"
+    }
+  ]
+}
+{% endschema %}
